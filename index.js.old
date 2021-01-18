@@ -1,0 +1,57 @@
+const discord = require('discord.js');
+
+const { prefix, token} = require('./config.json');
+
+const client = new discord.Client();
+
+
+client.once('ready',()=> {
+	console.log('Ready!');
+});
+
+client.on('message', (message) => {
+
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+	const args = message.content.slice(prefix.length).split(/ +/);
+	const command = args.shift().toLowerCase();
+
+
+	if (command === `ping`) {
+		message.channel.send('pong');
+	}
+	else if (command === `server`){
+		message.channel.send(`Nom du serveur : ${message.guild.name}\nNombre utilisateur : ${message.guild.memberCount}`);
+	}
+	else if (command === `avatar`){
+		if(!message.mentions.users.size){
+			return message.channel.send(`${message.author.displayAvatarURL({format: 'png'})}`)
+		}
+		const avatarList = message.mentions.users.map(user => {
+			return `${user.displayAvatarURL({format: 'png'})}`;
+		});
+		message.channel.send(avatarList);
+	}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+client.login(token);
